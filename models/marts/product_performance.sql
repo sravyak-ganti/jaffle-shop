@@ -11,10 +11,7 @@ product_summary as (
         count(order_item_id) as total_units_sold,
         sum(coalesce(product_price, 0)) as total_sales,
         sum(coalesce(supply_cost, 0)) as total_supply_cost,
-        sum(
-            coalesce(product_price, 0)
-            - coalesce(supply_cost, 0)
-        ) as gross_margin,
+        sum({{ gross_margin('product_price', 'supply_cost') }}) as gross_margin,
         case
             when is_food_item then 'Food'
             when is_drink_item then 'Drink'
